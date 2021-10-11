@@ -5,8 +5,19 @@ import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
+const DEVELOPMENT = "development";
+const PRODUCTION = "production";
+
+let mode = DEVELOPMENT;
+let devtool = "eval-source-map";
+
+if (mode === PRODUCTION) {
+  mode = PRODUCTION;
+  devtool = "source-map";
+}
+
 module.exports = {
-  mode: "development",
+  mode: mode,
 
   output: {
     path: path.resolve(__dirname, "build"),
@@ -39,10 +50,6 @@ module.exports = {
   },
 
   plugins: [
-    new CleanWebpackPlugin({
-      protectWebpackAssets: false,
-      cleanAfterEveryBuildPatterns: ["*.LICENSE.txt"],
-    }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({ template: "./src/index.html" }),
     new ForkTsCheckerWebpackPlugin({
@@ -50,6 +57,14 @@ module.exports = {
     }),
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
+      failOnError: false,
+      failOnWarning: false,
+      emitWarning: true,
+      // emitError: false,
+    }),
+    new CleanWebpackPlugin({
+      protectWebpackAssets: false,
+      cleanAfterEveryBuildPatterns: ["*.LICENSE.txt"],
     }),
   ],
 
@@ -57,10 +72,17 @@ module.exports = {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
 
-  devtool: "source-map",
+  devtool: devtool,
 
   devServer: {
-    static: "./dist",
+    static: path.join(__dirname, "build"),
     hot: true,
+    open: true,
+    client: {
+      overlay: {
+        errors: true,
+        warnings: false,
+      },
+    },
   },
 };

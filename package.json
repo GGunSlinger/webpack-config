@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "start": "webpack serve --config webpack.dev.config.ts",
-    "build": "webpack --config webpack.prod.config.ts"
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.ts",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.ts"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",

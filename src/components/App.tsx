@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import "../styles/index.scss";
+import style from "../styles/index.module.scss";
 import image from "../images/Screenshot.png";
 
 function App(): JSX.Element {
   const [count, setCount] = useState(1);
 
+  console.log(count);
+
   return (
-    <div>
+    <div className={style.main}>
       <h1>{count}</h1>
       <img src={image} alt="" width="250" />
       <button onClick={() => setCount((value) => value + 1)}>click</button>
