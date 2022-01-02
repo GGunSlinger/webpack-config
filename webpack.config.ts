@@ -4,6 +4,7 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import Dotenv from "dotenv-webpack";
 
 const DEVELOPMENT = "development";
 const PRODUCTION = "production";
@@ -26,7 +27,8 @@ module.exports = {
 
   module: {
     rules: [
-      { test: /\.(png|jpe?g|gif|svg)$/i, type: "asset" },
+      { test: /\.(png|jpe?g|gif|svg)$/i, type: "asset/resource" },
+
       {
         test: /\.(js|ts|tsx)$/,
         exclude: /node_modules/,
@@ -46,10 +48,15 @@ module.exports = {
           "sass-loader",
         ],
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+      },
     ],
   },
 
   plugins: [
+    new Dotenv(),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({ template: "./src/index.html" }),
     new ForkTsCheckerWebpackPlugin({
@@ -57,10 +64,6 @@ module.exports = {
     }),
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
-      failOnError: false,
-      failOnWarning: false,
-      emitWarning: true,
-      // emitError: false,
     }),
     new CleanWebpackPlugin({
       protectWebpackAssets: false,
@@ -70,6 +73,7 @@ module.exports = {
 
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
+    modules: [path.resolve(__dirname, "src"), "node_modules"],
   },
 
   devtool: devtool,

@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import style from "../styles/index.module.scss";
-import image from "../images/Screenshot.png";
+import style from "styles/index.module.scss";
+import image from "images/Screenshot.png";
 
 function App(): JSX.Element {
-  const [count, setCount] = useState(1);
-
-  console.log(count);
+  const [count, setCount] = useState(0);
 
   return (
     <div className={style.main}>
